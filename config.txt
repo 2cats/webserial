@@ -1,0 +1,4 @@
+[Common]
+HTTPAddr                =0.0.0.0:5000
+SerialPort   			=COM3
+SerialBuad              =115200
