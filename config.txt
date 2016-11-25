@@ -1,4 +1,4 @@
 [Common]
 HTTPAddr                =0.0.0.0:5000
-SerialPort   			=COM3
+SerialPort   		=/dev/ttyUSB0
 SerialBuad              =115200

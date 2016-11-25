@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { Menu,Segment ,Input ,Button,Grid,Card,Checkbox,Form ,Dropdown,Icon} from 'semantic-ui-react'
 import Socket from './Socket'
 import DeleteButton from './DeleteButton'
-
+import Style from './Style'
 export default class Filter extends Component {
 	constructor(props){
 		super(props);
-		this.state = { 
+		this.state = {
 			content:[],
 			start:"",
 			end:"",
@@ -61,9 +61,9 @@ export default class Filter extends Component {
 			}else{
 				return Socket.hexString2ASCII(hex_str);
 			}
-			
+
 		})
-		
+
 		this.setState({
 			content:matchStr,
 		})
@@ -84,26 +84,42 @@ export default class Filter extends Component {
 		let contentComp=[];
 		for (let i in this.state.content){
 			contentComp.push(
-					<Card.Content>
-					     <pre>
+					<Segment>
+					     <pre style={Style.pre}>
 				         		{this.state.content[i]}
 				         </pre>
-				     </Card.Content>
+				  </Segment>
 				)
 		}
-		return (
 
-        <div  style={{display:'flex',marginTop:"10px"}}>
-	 	<Card style={{flexGrow:"1"}}>
-	 	  <Card.Content extra style={{display:'flex'}}>
-	        <Input error={this.state.errStart} icon='mail forward' onChange={(e,obj)=>{this.setState({start:obj.value},this.updateFilter.bind(this))}} iconPosition='left' color='green' style={{marginRight:"10px" ,flexGrow:"1"}} placeholder='Start...' />
-	        <Input error={this.state.errEnd} icon='reply' onChange={(e,obj)=>{this.setState({end:obj.value},this.updateFilter.bind(this))}} iconPosition='right' color='red' style={{marginLeft:"3px" ,flexGrow:"1"}} placeholder='End...' />
-	        <Checkbox toggle checked={this.state.unicode} onChange={this.handleUnicodeChange.bind(this)} style={{marginLeft:"5px" ,marginRight:"5px",alignSelf:'center'}} label='Unicode'  />
-	        <Checkbox toggle checked={this.state.hex} onChange={this.handleHexChange.bind(this)} style={{marginLeft:"5px" ,marginRight:"5px",alignSelf:'center'}} label='Hex'  />
-	        <DeleteButton {...this.props}/>
-	      </Card.Content>
-			{contentComp}
-	    </Card>
+		if (contentComp.length>0) {
+			contentComp=(
+				<Segment.Group >
+					{contentComp}
+				</Segment.Group>
+			)
+		}else{
+			contentComp=""
+		}
+		return (
+<div  className={this.props.className}  style={{position:"relative",marginTop:"10px"}}>
+ <Segment raised color='orange'>
+	 <Segment>
+	 	<div style={{display:'flex',flexGrow:'row',flexWrap:"wrap",marginBottom:"15px"}}>
+			<Checkbox toggle checked={this.state.unicode} onChange={this.handleUnicodeChange.bind(this)} style={{marginLeft:"5px" ,marginRight:"5px",alignSelf:'center'}} label='Unicode'  />
+			<Checkbox toggle checked={this.state.hex} onChange={this.handleHexChange.bind(this)} style={{marginLeft:"5px" ,marginRight:"5px",alignSelf:'center'}} label='Hex'  />
+		</div>
+		<div style={{display:'flex',width:"100%",flexGrow:'row',flexWrap:"wrap",marginBottom:"10px"}}>
+				<Input  error={this.state.errStart} icon='mail forward' onChange={(e,obj)=>{this.setState({start:obj.value},this.updateFilter.bind(this))}} iconPosition='left' color='green' style={{marginRight:"10px" ,flexGrow:"1"}} placeholder='Start...' />
+				<Input error={this.state.errEnd} icon='reply' onChange={(e,obj)=>{this.setState({end:obj.value},this.updateFilter.bind(this))}} color='red' iconPosition='right' style={{marginRight:"10px" ,flexGrow:"1"}} placeholder='End...' />
+		</div>
+	 </Segment>
+	{contentComp}
+</Segment>
+<div style={{position:"absolute" ,top:"5px",right:"5px"}}>
+	<DeleteButton {...this.props}/>
+</div>
+
 		</div>
 
 

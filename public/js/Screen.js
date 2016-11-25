@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Menu,Segment ,Input ,Button,Grid,Card,Checkbox,Form ,Dropdown,Icon} from 'semantic-ui-react'
 import Socket from './Socket'
 import DeleteButton from './DeleteButton'
+import Style from './Style'
 
 function getSelectionText(){
     var selectedText = ""
@@ -13,7 +14,7 @@ function getSelectionText(){
 export default class Screen extends Component {
 	constructor(props){
 		super(props);
-		this.state = { 
+		this.state = {
 			_newdata:[],
 			hex:false,
 			trans:"",
@@ -56,15 +57,18 @@ export default class Screen extends Component {
 		}
 		return (
 
-			<div  onMouseUp={this.onMouseUp.bind(this)} style={{position:"relative",marginTop:"10px"}}>
-				<Segment overflow='scroll' style={{overflowY:'auto',height:"300px",wordWrap:'break-word',wordBreak:'break-all'}}>
-			      <pre style={{whiteSpace: 'pre-wrap',wordWrap: 'break-word'}}>
-			      	{dataShow}
-			      </pre>
+			<div className={this.props.className} onMouseUp={this.onMouseUp.bind(this)} style={{height:"300px",position:"relative"}}>
+				<Segment raised color='green' overflow='scroll' style={{overflowY:'auto',height:"100%",wordWrap:'break-word',wordBreak:'break-all'}}>
+            <div style={{marginTop:"25px"}}>
+              <pre style={Style.pre}>
+                {dataShow}
+              </pre>
+            </div>
+
 			    </Segment>
-			    
-			    <Segment  color='violet' hidden={!this.state.trans}  overflow='scroll' style={{overflowY:'auto'}}>
-			      <pre style={{whiteSpace: 'pre-wrap',wordWrap: 'break-word'}}>
+
+			    <Segment raised color='violet' hidden={!this.state.trans}  overflow='scroll' style={{overflowY:'auto'}}>
+			      <pre style={Style.pre}>
 			      	{this.state.trans}
 			      </pre>
 			    </Segment>
@@ -74,7 +78,7 @@ export default class Screen extends Component {
 			    	<DeleteButton {...this.props} />
 			    </div>
 			</div>
-  
+
 
 		)
 	}

@@ -1,26 +1,36 @@
 import React, { Component } from 'react'
 import { Menu,Segment ,Input ,Button,Checkbox,Icon,Card} from 'semantic-ui-react'
-
 import NotificationSystem from 'react-notification-system'
 import Notification from './Notification'
 import Socket from './Socket'
 import Sender from './Sender'
 import Filter from './Filter'
 import Screen from './Screen'
-
+import Animation from './Animation'
+import {css} from 'aphrodite';
+import {SortableContainer, SortableElement,arrayMove} from 'react-sortable-hoc';
+const SortableItem = SortableElement(({value}) => value);
+const SortableList = SortableContainer(({items}) => {
+    return (
+			<div>
+				{items.map((value, index) =>
+						<SortableItem key={`item-${index}`} index={index} value={value} />
+				)}
+			</div>
+    );
+});
 
 export default class Root extends Component {
 	constructor(props){
 		super(props);
-		this.state = { 
+		this.state = {
 			activeItem: 'Interact' ,
 			connected:false,
-			// comps:[],
 			compsCount:0,
 		}
 		this.comps=[];
 		this.id=0;
-		Socket.onControl(this.handleSocketControl.bind(this));	
+		Socket.onControl(this.handleSocketControl.bind(this));
 		this.handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 	}
 	handleClearClick(){
@@ -29,18 +39,21 @@ export default class Root extends Component {
 
 	addNewComp(_comp){
 		let comp = React.cloneElement(
-		    _comp, 
-		    { 
-		    	id: this.id,
-		    	onDeleteClick:this.handleDeleteComp.bind(this) }
+		    _comp,
+		    {
+					id:this.id,
+					className:css(Animation.in),
+		    	onDeleteClick:this.handleDeleteComp.bind(this)
+				}
 		);
-		this.id++;
 		this.comps.push(comp);
 		this.setState({
 			compsCount: this.state.compsCount+1
 		})
+		this.id++;
 	}
 	handleDeleteComp(id){
+		console.log(this.comps);
 		for (let k in this.comps){
 			if(this.comps[k].props.id===id){
 				this.comps.splice(k,1)
@@ -62,19 +75,19 @@ export default class Root extends Component {
 
 		}
 	}
-
 	  componentDidMount() {
 	    Notification._system = this.refs.notificationSystem;
 	  }
 
 	render() {
-	    const { activeItem } = this.state
+	  const { activeItem } = this.state
 		let connectedIcon;
 		if (this.state.connected){
 			connectedIcon=<Icon name='linkify' />
 		}else{
 			connectedIcon=<Icon loading name='spinner' />
 		}
+
     	return (
 	    	<div style={{margin:"10px",flex:1}}>
 		        <Menu stackable   >
@@ -88,9 +101,10 @@ export default class Root extends Component {
 		 	        </Menu.Item>
 		        	</Menu.Menu>
 		        </Menu>
+
 		        <div style={{position:"relative"}}>
-		        	{this.comps}
-				</div>
+								{this.comps}
+						</div>
 		        <NotificationSystem ref="notificationSystem" />
 	    	</div>
 	    )

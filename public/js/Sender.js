@@ -6,7 +6,7 @@ import DeleteButton from './DeleteButton'
 export default class Sender extends Component {
 	constructor(props){
 		super(props);
-		this.state = { 
+		this.state = {
 			input:"",
 			errInput:false,
 			sendDisabled:true,
@@ -29,7 +29,7 @@ export default class Sender extends Component {
 				sendDisabled:true,
 			})
 		}
-		
+
 	}else{
 		this.setState({
 			errInput:false,
@@ -44,10 +44,10 @@ handleSendInput(){
 }
 	render(){
 		return (
-
-            <div style={{display:'flex',marginTop:"10px"}}>
-                <Input  
-                style={{flexGrow:'1',marginRight:"5px"}}
+ 		<Segment className={this.props.className} raised color='blue' >
+      <div  style={{display:'flex'}}>
+        <Input
+        style={{flexGrow:'1',marginRight:"5px"}}
 				fluid
 			  	ref="input"
 			  	value={this.state.input}
@@ -56,11 +56,10 @@ handleSendInput(){
 			    placeholder='Input'
 			    error={this.state.errInput}
 			    onChange={this.handleInputChange.bind(this)}
-
 				></Input>
 				<DeleteButton {...this.props}/>
-            </div>
-	
+        </div>
+			</Segment>
 		)
 	}
 }
