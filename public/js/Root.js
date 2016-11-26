@@ -51,7 +51,7 @@ export default class Root extends Component {
 			layouts:[...this.state.layouts,{
 							x: 0,
 							y: 0,
-							w: 2,
+							w: 1,
 							h: comp.props.h,
 							i: String(this.id)
 					}],
