@@ -57,7 +57,7 @@ export default class Screen extends Component {
 		}
 		return (
 
-			<div className={this.props.className} onMouseUp={this.onMouseUp.bind(this)} style={{height:"300px",position:"relative"}}>
+			<div className={this.props.className} onMouseUp={this.onMouseUp.bind(this)} style={{height:"100%",position:"relative"}}>
 				<Segment raised color='green' overflow='scroll' style={{overflowY:'auto',height:"100%",wordWrap:'break-word',wordBreak:'break-all'}}>
             <div style={{marginTop:"25px"}}>
               <pre style={Style.pre}>

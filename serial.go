@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
-
 	"github.com/googollee/go-socket.io"
 	"github.com/tarm/serial"
+	"log"
+	"os"
 )
 
 var Serial *serial.Port
@@ -26,7 +26,10 @@ func SerialOpen() {
 	var err error
 	c := &serial.Config{Name: Config.SerialPort, Baud: Config.SerialBuad}
 	Serial, err = serial.OpenPort(c)
-	panicWhenError(err)
+	if err != nil {
+		fmt.Printf("无法打开 %s\n", Config.SerialPort)
+		os.Exit(-1)
+	}
 }
 func SerialReadThread() {
 	buf := make([]byte, 512)

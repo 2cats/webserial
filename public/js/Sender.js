@@ -44,21 +44,21 @@ handleSendInput(){
 }
 	render(){
 		return (
- 		<Segment className={this.props.className} raised color='blue' >
-      <div  style={{display:'flex'}}>
-        <Input
-        style={{flexGrow:'1',marginRight:"5px"}}
-				fluid
-			  	ref="input"
-			  	value={this.state.input}
-			    action={{ color: 'teal', labelPosition: 'left',disabled:this.state.sendDisabled, icon: 'terminal', content: 'Send' ,onClick:this.handleSendInput.bind(this) }}
-			    actionPosition='left'
-			    placeholder='Input'
-			    error={this.state.errInput}
-			    onChange={this.handleInputChange.bind(this)}
-				></Input>
-				<DeleteButton {...this.props}/>
-        </div>
+ 			<Segment style={{height:"100%"}} className={this.props.className} raised color='blue' >
+	      		<div  style={{display:'flex'}}>
+		        	<Input
+		        	style={{flexGrow:'1',marginRight:"5px"}}
+						fluid
+					  	ref="input"
+					  	value={this.state.input}
+					    action={{ color: 'teal', labelPosition: 'left',disabled:this.state.sendDisabled, icon: 'terminal', content: 'Send' ,onClick:this.handleSendInput.bind(this) }}
+					    actionPosition='left'
+					    placeholder='Input'
+					    error={this.state.errInput}
+					    onChange={this.handleInputChange.bind(this)}
+						></Input>
+					<DeleteButton {...this.props}/>
+	        	</div>
 			</Segment>
 		)
 	}
