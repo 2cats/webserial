@@ -21,7 +21,7 @@ export default class Root extends Component {
 			activeItem: 'Interact' ,
 			connected:false,
 			compsCount:0,
-			layouts:[]
+			layouts:[],
 		}
 		this.comps=[];
 		this.id=0;
@@ -41,26 +41,34 @@ export default class Root extends Component {
 		    	onDeleteClick:this.handleDeleteComp.bind(this)
 				}
 		);
-
+		let oldLayout=this.state.layouts.map((item)=>{
+						if(item.x===0&&item.y===0){
+							return Object.assign(item,{x:1,y:1});
+						}else{
+							return item;
+						}
+					})
 		this.comps.push(
 			<div  id={this.id} key={String(this.id)}>
 				{comp}
 			</div>
 			);
+
 		this.setState({
-			layouts:[...this.state.layouts,{
+			layouts:[{
 							x: 0,
 							y: 0,
 							w: 1,
 							h: comp.props.h,
+							minH:comp.props.h,
 							i: String(this.id)
-					}],
+					},...oldLayout],
 			compsCount: this.state.compsCount+1
 		})
 		this.id++;
 	}
 	handleDeleteComp(id){
-		
+
 		for (let k in this.comps){
 			if(this.comps[k].props.id===id){
 				this.comps.splice(k,1)
@@ -85,9 +93,16 @@ export default class Root extends Component {
 	  componentDidMount() {
 	    Notification._system = this.refs.notificationSystem;
 	  }
-componentDidUpdate(){
-
-}
+	handleMovableChange(event, { name, value, checked }){
+		this.setState({
+			movable:checked
+		})
+	}
+	onLayoutChange(x){
+		this.setState({
+			layouts:x
+		})
+	}
 	render() {
 	  const { activeItem } = this.state
 		let connectedIcon;
@@ -104,18 +119,25 @@ componentDidUpdate(){
 		          <Menu.Item name='Filter'  onClick={()=>{this.addNewComp.bind(this)(<Filter h={15} />)}} />
 		          <Menu.Item name='Screen'  onClick={()=>{this.addNewComp.bind(this)(<Screen h={30} />)}} />
 		          <Menu.Item name='Clear'  onClick={this.handleClearClick.bind(this)} />
+
 		          <Menu.Menu position='right'>
 		          	<Menu.Item>
 		            	{connectedIcon}
 		 	        </Menu.Item>
 		        	</Menu.Menu>
 		        </Menu>
+
 		        <div style={{position:"relative"}}>
-		         <ResponsiveReactGridLayout className="layout" 
+		         <ResponsiveReactGridLayout className="layout"
 		         	  layouts={{xxs:this.state.layouts}}
+		         	  autoSize={true}
+		         	  onLayoutChange={this.onLayoutChange.bind(this)}
 			          rowHeight={1}
 				      breakpoints={{lg: 0, md: 0, sm: 0, xs: 0, xxs: 0}}
-				      cols={{lg: 2, md: 2, sm: 2, xs: 2, xxs: 2}}>
+				      cols={{lg: 2, md: 2, sm: 2, xs: 2, xxs: 2}}
+				      draggableCancel='.nodrag'
+				      >
+
 				      {this.comps}
 			    </ResponsiveReactGridLayout>
 				</div>

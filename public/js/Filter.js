@@ -85,7 +85,7 @@ export default class Filter extends Component {
 		for (let i in this.state.content){
 			contentComp.push(
 					<Segment>
-					     <pre style={Style.pre}>
+					     <pre className="nodrag" style={Style.pre}>
 				         		{this.state.content[i]}
 				         </pre>
 				  </Segment>
@@ -103,15 +103,15 @@ export default class Filter extends Component {
 		}
 		return (
 	<div style={{position:"relative",height:"100%"}}>
-		 <Segment raised style={{height:"100%"}} color='orange'>
-			 <Segment>
+		 <Segment className='handle' raised style={{height:"100%",overflow:'auto'}} color='orange'>
+			 <Segment >
 			 	<div style={{display:'flex',flexGrow:'row',flexWrap:"wrap",marginBottom:"15px"}}>
 					<Checkbox toggle checked={this.state.unicode} onChange={this.handleUnicodeChange.bind(this)} style={{marginLeft:"5px" ,marginRight:"5px",alignSelf:'center'}} label='Unicode'  />
 					<Checkbox toggle checked={this.state.hex} onChange={this.handleHexChange.bind(this)} style={{marginLeft:"5px" ,marginRight:"5px",alignSelf:'center'}} label='Hex'  />
 				</div>
 				<div style={{display:'flex',width:"100%",flexGrow:'row',flexWrap:"wrap",marginBottom:"10px"}}>
-						<Input  error={this.state.errStart} icon='mail forward' onChange={(e,obj)=>{this.setState({start:obj.value},this.updateFilter.bind(this))}} iconPosition='left' color='green' style={{marginRight:"10px" ,flexGrow:"1"}} placeholder='Start...' />
-						<Input error={this.state.errEnd} icon='reply' onChange={(e,obj)=>{this.setState({end:obj.value},this.updateFilter.bind(this))}} color='red' iconPosition='right' style={{marginRight:"10px" ,flexGrow:"1"}} placeholder='End...' />
+						<Input className="nodrag" error={this.state.errStart} icon='mail forward' onChange={(e,obj)=>{this.setState({start:obj.value},this.updateFilter.bind(this))}} iconPosition='left' color='green' style={{marginRight:"10px" ,flexGrow:"1"}} placeholder='Start...' />
+						<Input className="nodrag" error={this.state.errEnd} icon='reply' onChange={(e,obj)=>{this.setState({end:obj.value},this.updateFilter.bind(this))}} color='red' iconPosition='right' style={{marginRight:"10px" ,flexGrow:"1"}} placeholder='End...' />
 				</div>
 			 </Segment>
 			{contentComp}

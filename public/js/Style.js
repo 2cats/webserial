@@ -1,7 +1,7 @@
 const style = {
   pre:{
     whiteSpace: 'pre-wrap',
-    wordWrap: 'break-word'
+    wordWrap: 'break-word',
   }
 }
 export {style as default}
