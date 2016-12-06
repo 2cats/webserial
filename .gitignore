@@ -1,3 +1,4 @@
 *.exe
 public/node_modules/
 public/js/*.map
+*.log

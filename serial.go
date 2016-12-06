@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/googollee/go-socket.io"
-	"github.com/tarm/serial"
 	"log"
 	"os"
 	"time"
+
+	"github.com/googollee/go-socket.io"
+	"github.com/tarm/serial"
 )
 
 var Serial *serial.Port
@@ -20,7 +21,7 @@ func SendBytes(so socketio.Socket, data []byte) error {
 	for i := 0; i < length; i++ {
 		str = str + fmt.Sprintf("%02X ", data[i])
 	}
-
+	Flogger.Printf(str)
 	return so.Emit("rx", str)
 }
 func SerialOpen() {
@@ -37,8 +38,8 @@ func SerialReadThread() {
 	var n int
 	var err error
 	for {
-		if Config.SendInterval>0{
-			time.Sleep(time.Duration(Config.SendInterval)*time.Millisecond);
+		if Config.SendInterval > 0 {
+			time.Sleep(time.Duration(Config.SendInterval) * time.Millisecond)
 		}
 
 		n, err = Serial.Read(buf)
@@ -46,7 +47,7 @@ func SerialReadThread() {
 			log.Fatal(err)
 		}
 		for _, so := range solist {
-			log.Printf("Serial Recv: %d",n)
+			log.Printf("Serial Recv: %d", n)
 			SendBytes(so, buf[:n])
 		}
 	}

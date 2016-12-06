@@ -6,6 +6,7 @@ import (
 	"github.com/skratchdot/open-golang/open"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
@@ -40,6 +41,7 @@ func delayStartBrowser(t time.Duration) {
 }
 func main() {
 	ReadConfiguration()
+	FlogInit()
 	solist = make(map[string]socketio.Socket)
 	server, err := socketio.NewServer(nil)
 	if err != nil {
@@ -48,6 +50,16 @@ func main() {
 	server.On("connection", func(so socketio.Socket) {
 		solist[so.Id()] = so
 		log.Println("on connection")
+
+		if(len(os.Args)>1){
+			faw:=ReadLog(os.Args[1])
+			if faw!=nil{
+				so.Emit("rx", string(faw))
+			}
+
+		}
+
+
 		so.On("tx", func(msg string) {
 			bs, _ := String2Bytes(msg)
 			_, err := Serial.Write(bs)
