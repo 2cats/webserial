@@ -21,6 +21,7 @@ var _Config struct {
 		HTTPAddr   string
 		SerialPort string
 		SerialBuad int
+		SendInterval int
 	}
 }
 var Config = &_Config.Common
@@ -28,5 +29,8 @@ var Config = &_Config.Common
 func ReadConfiguration() {
 	err := gcfg.ReadFileInto(&_Config, ConfigFileName)
 	panicWhenError(err)
+	if Config.SendInterval<0{
+		Config.SendInterval=0;
+	}
 	fmt.Printf("Config:%+v\n", *Config)
 }

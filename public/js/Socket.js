@@ -5,6 +5,7 @@ class Socket extends React.Component{
     constructor(props){
         super(props);
         this.data=""
+        this.datalen=0
         this.onDataFuncs=[]
         this.onControlFuncs=[]
         this.connected=false;
@@ -40,13 +41,15 @@ class Socket extends React.Component{
     }
     clearData(){
         this.data="";
-        this._onData();
+        this.datalen=0;
+        this._onData(this.data);
     }
     _onData(data){
         if (data) {
+            this.datalen=this.datalen+data.trim().split(" ").length;
             this.data=this.data+data;
         }
-        
+
         this.onDataFuncs.map((func)=>{
             if (func!=null){
                 func(data);
@@ -80,7 +83,7 @@ class Socket extends React.Component{
         if(str.length<1){
             return false
         }
-        
+
         let sd="";
         for(let i=0;i<str.length;i++){
             let charcode=str.charCodeAt(i);

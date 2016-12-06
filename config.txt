@@ -1,4 +1,5 @@
 [Common]
 HTTPAddr                =0.0.0.0:5000
-SerialPort   		=COM3
+SerialPort   		        =COM1
 SerialBuad              =115200
+SendInterval            =1000

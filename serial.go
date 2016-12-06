@@ -6,6 +6,7 @@ import (
 	"github.com/tarm/serial"
 	"log"
 	"os"
+	"time"
 )
 
 var Serial *serial.Port
@@ -32,15 +33,20 @@ func SerialOpen() {
 	}
 }
 func SerialReadThread() {
-	buf := make([]byte, 512)
+	buf := make([]byte, 10240)
 	var n int
 	var err error
 	for {
+		if Config.SendInterval>0{
+			time.Sleep(time.Duration(Config.SendInterval)*time.Millisecond);
+		}
+
 		n, err = Serial.Read(buf)
 		if err != nil {
 			log.Fatal(err)
 		}
 		for _, so := range solist {
+			log.Printf("Serial Recv: %d",n)
 			SendBytes(so, buf[:n])
 		}
 	}
