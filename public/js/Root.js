@@ -1,5 +1,9 @@
+import '../node_modules/react-grid-layout/css/styles.css'
+import '../node_modules/react-resizable/css/styles.css'
+import '../css/semantic/semantic.min.css'
+import '../css/animate.css'
 import React, { Component } from 'react'
-import { Menu,Segment ,Statistic,Input ,Button,Checkbox,Icon,Card} from 'semantic-ui-react'
+import { Menu,Segment ,Dropdown,Statistic,Input ,Button,Checkbox,Icon,Card} from 'semantic-ui-react'
 import NotificationSystem from 'react-notification-system'
 import Notification from './Notification'
 import Socket from './Socket'
@@ -10,8 +14,6 @@ import Animation from './Animation'
 import {css} from 'aphrodite';
 import ReactHeight from 'react-height';
 import CountUp from 'react-countup';
-import '../node_modules/react-grid-layout/css/styles.css'
-import '../node_modules/react-resizable/css/styles.css'
 import {Responsive, WidthProvider} from 'react-grid-layout';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -112,6 +114,9 @@ export default class Root extends Component {
 			layouts:x
 		})
 	}
+	onHistoryClick(e){
+		Socket.QueryHistory(e.target.innerText)
+	}
 	render() {
 	  const { activeItem } = this.state
 		let connectedIcon;
@@ -131,10 +136,17 @@ export default class Root extends Component {
 							<Menu.Item name="Count"	>
 							  <CountUp start={this.state.countStart} end={this.state.countEnd} duration={1}/>
 							</Menu.Item>
+
 		          <Menu.Menu position='right'>
+								<Dropdown text='Load History' scrolling pointing className='link item' >
+									<Dropdown.Menu onClick={this.onHistoryClick.bind(this)}>
+										<Dropdown.Item>A</Dropdown.Item>
+										<Dropdown.Item>B</Dropdown.Item>
+									</Dropdown.Menu>
+								</Dropdown>
 		          	<Menu.Item>
 		            	{connectedIcon}
-		 	        </Menu.Item>
+ 								</Menu.Item>
 		        	</Menu.Menu>
 		        </Menu>
 

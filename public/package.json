@@ -10,6 +10,7 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "css-loader": "^0.26.0",
+    "file-loader": "^0.9.0",
     "react": "^15.4.1",
     "react-animations": "^0.1.0",
     "react-countup": "^1.3.0",
@@ -22,6 +23,7 @@
     "socket.io": "^1.6.0",
     "socket.io-client": "^1.6.0",
     "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
     "webpack": "^1.13.3"
   },
   "devDependencies": {},

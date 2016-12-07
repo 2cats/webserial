@@ -44,6 +44,9 @@ class Socket extends React.Component{
         this.datalen=0;
         this._onData(this.data);
     }
+    QueryHistory(name)  {
+      this.socket.emit('history',name);
+    }
     _onData(data){
         if (data) {
             data=data.replace(/[\n\r]/g,'')

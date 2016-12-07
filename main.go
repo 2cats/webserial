@@ -50,16 +50,11 @@ func main() {
 	server.On("connection", func(so socketio.Socket) {
 		solist[so.Id()] = so
 		log.Println("on connection")
-
-		if(len(os.Args)>1){
-			faw:=ReadLog(os.Args[1])
-			if faw!=nil{
-				so.Emit("rx", string(faw))
-			}
-
 		}
-
-
+		so.On("history", func(msg string) {
+			bs, _ := ReadLog(msg)
+			_, err := Serial.Write(bs)
+		})
 		so.On("tx", func(msg string) {
 			bs, _ := String2Bytes(msg)
 			_, err := Serial.Write(bs)

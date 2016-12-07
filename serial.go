@@ -11,7 +11,6 @@ import (
 )
 
 var Serial *serial.Port
-
 func SendBytes(so socketio.Socket, data []byte) error {
 	length := len(data)
 	if length < 1 {
