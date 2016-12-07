@@ -2,12 +2,13 @@ package main
 
 import (
 	"encoding/hex"
-	"github.com/googollee/go-socket.io"
-	"github.com/skratchdot/open-golang/open"
 	"log"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/googollee/go-socket.io"
+	"github.com/skratchdot/open-golang/open"
 )
 
 type ControlMsg struct {
@@ -31,10 +32,7 @@ func delayStartBrowser(t time.Duration) {
 	strs := strings.Split(Config.HTTPAddr, ":")
 	if len(strs) == 2 {
 		time.Sleep(t)
-		err := open.Run("http://localhost:" + strs[1])
-		if err != nil {
-			log.Printf(err.Error())
-		}
+		open.Run("http://localhost:" + strs[1])
 	}
 
 }
@@ -71,7 +69,10 @@ func main() {
 	})
 	http.Handle("/socket.io/", server)
 	http.Handle("/", http.FileServer(http.Dir("./public")))
-	SerialOpen()
+	err = SerialOpen()
+	if err != nil {
+		log.Fatalf("Cannot Open %s", Config.SerialPort)
+	}
 	go SerialReadThread()
 	go delayStartBrowser(time.Second)
 	log.Println("Serving at " + Config.HTTPAddr)
