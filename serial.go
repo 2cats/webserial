@@ -40,7 +40,6 @@ func SerialReadThread() {
 		if Config.SendInterval > 0 {
 			time.Sleep(time.Duration(Config.SendInterval) * time.Millisecond)
 		}
-
 		n, err = Serial.Read(buf)
 		if err != nil {
 			log.Fatal(err)

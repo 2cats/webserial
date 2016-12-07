@@ -27,6 +27,7 @@ export default class Root extends Component {
 			layouts:[],
 			countStart:0,
 			countEnd:0,
+			historylist:[],
 		}
 		this.comps=[];
 		this.id=0;
@@ -99,6 +100,10 @@ export default class Root extends Component {
 			})
 		}else if (data.type==="error"){
 
+		}else if(data.type==="historylist"){
+			this.setState({
+				historylist:JSON.parse(data.value)
+			})
 		}
 	}
 	  componentDidMount() {
@@ -125,7 +130,11 @@ export default class Root extends Component {
 		}else{
 			connectedIcon=<Icon loading name='spinner' />
 		}
-
+		let historyitems =this.state.historylist.map((item)=>{
+			return (
+				<Dropdown.Item>{item}</Dropdown.Item>
+			)
+		})
     	return (
 	    	<div style={{margin:"10px",flex:1}}>
 		        <Menu stackable   >
@@ -140,8 +149,7 @@ export default class Root extends Component {
 		          <Menu.Menu position='right'>
 								<Dropdown text='Load History' scrolling pointing className='link item' >
 									<Dropdown.Menu onClick={this.onHistoryClick.bind(this)}>
-										<Dropdown.Item>A</Dropdown.Item>
-										<Dropdown.Item>B</Dropdown.Item>
+										{historyitems}
 									</Dropdown.Menu>
 								</Dropdown>
 		          	<Menu.Item>

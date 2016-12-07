@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	"gopkg.in/gcfg.v1"
 )
 
@@ -12,7 +11,15 @@ const (
 
 func panicWhenError(err error) {
 	if err != nil {
+		checkReportError(err)
 		panic(err)
+	}
+}
+func checkReportError(err error) {
+	if err != nil {
+		for _, so := range solist {
+				so.Emit("err",err.Error())
+		}
 	}
 }
 

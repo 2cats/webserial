@@ -2,13 +2,14 @@ package main
 
 import (
 	"encoding/hex"
-	"github.com/googollee/go-socket.io"
-	"github.com/skratchdot/open-golang/open"
+	"encoding/json"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 	"time"
+
+	"github.com/googollee/go-socket.io"
+	"github.com/skratchdot/open-golang/open"
 )
 
 type ControlMsg struct {
@@ -39,6 +40,8 @@ func delayStartBrowser(t time.Duration) {
 	}
 
 }
+
+
 func main() {
 	ReadConfiguration()
 	FlogInit()
@@ -50,15 +53,26 @@ func main() {
 	server.On("connection", func(so socketio.Socket) {
 		solist[so.Id()] = so
 		log.Println("on connection")
+		files, err := ListDir(".", ".log")
+		if err == nil && files != nil && len(files) > 0 {
+			histjson, err := json.Marshal(files)
+			if err == nil {
+				so.Emit("historylist", string(histjson))
+			}
 		}
+
 		so.On("history", func(msg string) {
-			bs, _ := ReadLog(msg)
-			_, err := Serial.Write(bs)
+			bs ,err:= ReadLog(msg)
+			if bs != nil && len(bs)>0{
+				so.Emit("rx", string(bs))
+			}else{
+				checkReportError(err)
+			}
 		})
 		so.On("tx", func(msg string) {
 			bs, _ := String2Bytes(msg)
 			_, err := Serial.Write(bs)
-			panicWhenError(err)
+			checkReportError(err)
 		})
 		so.On("err", func(msg string) {
 			log.Printf("!ERR: " + msg)
