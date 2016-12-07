@@ -1,5 +1,5 @@
 [Common]
 HTTPAddr                =0.0.0.0:5000
-SerialPort   		        =COM1
+SerialPort   		        =/dev/ttyUSB0
 SerialBuad              =115200
 SendInterval            =1000

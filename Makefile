@@ -1,4 +1,10 @@
-win:
-	go build
+GOARCH		=	arm
+GOOS		=	linux
+bin_name 	= 	webserial
+tar_name   	= 	webserial
+all :
+	GOARCH=$(GOARCH) GOOS=$(GOOS) go build -o $(bin_name)
+	make pack
+pack:
 	cd public && webpack
-	tar -zcf serial_socket_bin.tar.gz *.exe config.txt public/index.html public/css public/js/bundle.js
+	tar -zcf ${tar_name}.tar.gz  ${bin_name}  config.txt public/index.html public/css public/js/bundle.js
