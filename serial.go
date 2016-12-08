@@ -3,10 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
-
 	"github.com/googollee/go-socket.io"
 	"github.com/tarm/serial"
-
 	"time"
 )
 
@@ -21,7 +19,7 @@ func SendBytes(so socketio.Socket, data []byte) error {
 	for i := 0; i < length; i++ {
 		str = str + fmt.Sprintf("%02X ", data[i])
 	}
-
+	Flogger.Printf(str)
 	return so.Emit("rx", str)
 }
 func SerialOpen() error {

@@ -46,6 +46,7 @@ class Socket extends React.Component{
     }
     _onData(data){
         if (data) {
+            data=data.replace(/[\n\r]/g,'')
             this.datalen=this.datalen+data.trim().split(" ").length;
             this.data=this.data+data;
         }
