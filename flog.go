@@ -17,16 +17,15 @@ func FlogInit() {
 	// // debugLog.SetPrefix("[Info]")
 	// debugLog.Printf("DD\r\n")
 }
-func ReadLog(filename string) []byte {
+func ReadLog(filename string) ([]byte,error){
 	logfile, err := os.OpenFile(filename, os.O_RDONLY, 0666)
+	defer logfile.Close()
 	if err != nil {
-		log.Printf(err.Error())
-		return nil
+		return nil,err
 	}
 	faw, err := ioutil.ReadAll(logfile)
 	if err != nil {
-		log.Printf(err.Error())
-		return nil
+		return nil,err
 	}
-	return faw
+	return faw,nil
 }

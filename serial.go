@@ -9,7 +9,6 @@ import (
 )
 
 var Serial *serial.Port
-
 func SendBytes(so socketio.Socket, data []byte) error {
 	length := len(data)
 	if length < 1 {
@@ -36,9 +35,9 @@ func SerialReadThread() {
 		if Config.SendInterval > 0 {
 			time.Sleep(time.Duration(Config.SendInterval) * time.Millisecond)
 		}
-
 		n, err = Serial.Read(buf)
 		if err != nil {
+			checkReportError(errors.New("Serial Port Unexpectedly Closed"))
 			for {
 				log.Printf("[Retry] Opening SerialPort")
 				if Serial != nil {

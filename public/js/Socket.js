@@ -13,6 +13,9 @@ class Socket extends React.Component{
         this.socket.on('rx', function(data) {
           this._onData(data);
         }.bind(this));
+        this.socket.on('historylist', function(data) {
+            this._onControl({type:'historylist',value:data})
+        }.bind(this));
         this.socket.on('err', function(data) {
           Notification.error(data);
           this._onControl({type:'error',value:data})
@@ -44,11 +47,17 @@ class Socket extends React.Component{
         this.datalen=0;
         this._onData(this.data);
     }
+    QueryHistory(name)  {
+      this.socket.emit('history',name);
+    }
     _onData(data){
         if (data) {
-            data=data.replace(/[\n\r]/g,'')
-            this.datalen=this.datalen+data.trim().split(" ").length;
-            this.data=this.data+data;
+            data=data.replace(/[\n\r]/g,'').trim()
+            let newdatalen=data.split(" ").length;
+            if(newdatalen>0){
+              this.datalen=this.datalen+newdatalen;
+              this.data=this.data+' '+data;
+            }
         }
 
         this.onDataFuncs.map((func)=>{

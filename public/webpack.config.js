@@ -17,8 +17,8 @@ module.exports = {
             test: /\.css$/,
             loader: 'style!css'
         }, {
-            test: /\.(png|jpg)$/,
-            loader: 'url?limit=25000' //只解析小于25000字节的图片
-        }]
+           test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
+           loader: 'url-loader?name=[path][name].[ext]'
+         }]
     }
 };
