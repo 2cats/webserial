@@ -50,6 +50,9 @@ class Socket extends React.Component{
     QueryHistory(name)  {
       this.socket.emit('history',name);
     }
+    TruncateLog(){
+        this.socket.emit('cmd',"TruncateLog");
+    }
     _onData(data){
         if (data) {
             data=data.replace(/[\n\r]/g,'').trim()

@@ -2,10 +2,16 @@ package main
 
 import (
 	"io/ioutil"
-
+	"os"
 	"strings"
 )
 
+func TruncateLog() {
+	logfile, err := os.OpenFile(logfilename, os.O_TRUNC, 0666)
+	defer logfile.Close()
+	checkReportError(err)
+
+}
 func ListDir(dirPth string, suffix string) (files []string, err error) {
 	files = make([]string, 0, 10)
 

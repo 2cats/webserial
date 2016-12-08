@@ -40,7 +40,6 @@ func delayStartBrowser(t time.Duration) {
 
 }
 
-
 func main() {
 	ReadConfiguration()
 	FlogInit()
@@ -59,12 +58,18 @@ func main() {
 				so.Emit("historylist", string(histjson))
 			}
 		}
-
+		so.On("cmd", func(cmd string) {
+			switch cmd {
+			case "TruncateLog":
+				log.Printf("TruncateLog")
+				TruncateLog()
+			}
+		})
 		so.On("history", func(msg string) {
-			bs ,err:= ReadLog(msg)
-			if bs != nil && len(bs)>0{
+			bs, err := ReadLog(msg)
+			if bs != nil && len(bs) > 0 {
 				so.Emit("rx", string(bs))
-			}else{
+			} else {
 				checkReportError(err)
 			}
 		})

@@ -151,6 +151,7 @@ export default class Root extends Component {
 							</Menu.Item>
 
 		          <Menu.Menu position='right'>
+				    	<Menu.Item name='Truncate Current'  onClick={()=>{Socket.TruncateLog()}} />
 								<Dropdown text='Load History' scrolling pointing className='link item' >
 									<Dropdown.Menu onClick={this.onHistoryClick.bind(this)}>
 										{historyitems}
