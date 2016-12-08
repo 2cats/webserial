@@ -141,7 +141,7 @@ export default class Root extends Component {
 		}
     	return (
 	    	<div style={{margin:"10px",flex:1}}>
-		        <Menu stackable   >
+		        <Menu    >
 		          <Menu.Item name='Sender' onClick={()=>{this.addNewComp.bind(this)(<Sender h={7} />)}} />
 		          <Menu.Item name='Filter'  onClick={()=>{this.addNewComp.bind(this)(<Filter h={15} />)}} />
 		          <Menu.Item name='Screen'  onClick={()=>{this.addNewComp.bind(this)(<Screen h={30} />)}} />

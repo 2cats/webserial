@@ -6,24 +6,23 @@ import (
 	"log"
 	"time"
 
-	"github.com/googollee/go-socket.io"
 	"github.com/tarm/serial"
 )
 
 var Serial *serial.Port
 
-func SendBytes(so socketio.Socket, data []byte) error {
+func RawBytes2StrBytes(data []byte) string {
 	length := len(data)
 	if length < 1 {
-		return nil
+		return ""
 	}
 	str := ""
 	for i := 0; i < length; i++ {
 		str = str + fmt.Sprintf("%02X ", data[i])
 	}
-	Flogger.Printf(str)
-	return so.Emit("rx", str)
+	return str
 }
+
 func SerialOpen() error {
 	var err error
 	c := &serial.Config{Name: Config.SerialPort, Baud: Config.SerialBuad}
@@ -57,8 +56,10 @@ func SerialReadThread() {
 
 		if n > 0 {
 			log.Printf("Serial Recv: %d", n)
+			str:=RawBytes2StrBytes(buf[:n])
+			Flogger.Printf(str)
 			for _, so := range solist {
-				SendBytes(so, buf[:n])
+				so.Emit("rx", str)
 			}
 		}
 

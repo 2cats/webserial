@@ -7,4 +7,4 @@ all :
 	make pack
 pack:
 	cd public && webpack
-	tar -zcf ${tar_name}.tar.gz  ${bin_name}  config.txt public/index.html public/css public/js/bundle.js
+	tar -zcf ${tar_name}.tar.gz  ${bin_name}  config.txt public/index.html public/*.ico public/js/bundle.js
