@@ -17,7 +17,8 @@ func ListDir(dirPth string, suffix string) (files []string, err error) {
 	// PthSep := string(os.PathSeparator)
 	suffix = strings.ToUpper(suffix) //忽略后缀匹配的大小写
 
-	for _, fi := range dir {
+	for i := len(dir) - 1; i >= 0; i-- {
+		fi := dir[i]
 		if fi.IsDir() { // 忽略目录
 			continue
 		}
@@ -25,6 +26,5 @@ func ListDir(dirPth string, suffix string) (files []string, err error) {
 			files = append(files, fi.Name())
 		}
 	}
-
 	return files, nil
 }

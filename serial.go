@@ -1,14 +1,17 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
+	"time"
+
 	"github.com/googollee/go-socket.io"
 	"github.com/tarm/serial"
-	"time"
 )
 
 var Serial *serial.Port
+
 func SendBytes(so socketio.Socket, data []byte) error {
 	length := len(data)
 	if length < 1 {
@@ -51,9 +54,10 @@ func SerialReadThread() {
 				time.Sleep(time.Second * 2)
 			}
 		}
+
 		if n > 0 {
+			log.Printf("Serial Recv: %d", n)
 			for _, so := range solist {
-				log.Printf("Serial Recv: %d", n)
 				SendBytes(so, buf[:n])
 			}
 		}

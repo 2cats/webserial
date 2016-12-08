@@ -2,3 +2,5 @@
 *.tar.gz
 public/node_modules/
 public/js/*.map
+*.log
+webserial

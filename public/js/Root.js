@@ -130,11 +130,15 @@ export default class Root extends Component {
 		}else{
 			connectedIcon=<Icon loading name='spinner' />
 		}
-		let historyitems =this.state.historylist.map((item)=>{
-			return (
-				<Dropdown.Item>{item}</Dropdown.Item>
-			)
-		})
+		let historyitems =[]
+		for (let i = 0; i < this.state.historylist.length; i++) {
+			if (i==0) {
+				 historyitems=historyitems.concat(<Dropdown.Header>Current</Dropdown.Header>)
+			}else	if (i==1) {
+				 historyitems=historyitems.concat(<Dropdown.Header>Before</Dropdown.Header>)
+			}
+			historyitems=historyitems.concat(<Dropdown.Item>{this.state.historylist[i]}</Dropdown.Item>)
+		}
     	return (
 	    	<div style={{margin:"10px",flex:1}}>
 		        <Menu stackable   >
