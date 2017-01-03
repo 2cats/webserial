@@ -96,10 +96,15 @@ func main() {
 	})
 	http.Handle("/socket.io/", server)
 	http.Handle("/", http.FileServer(http.Dir("./public")))
-	err = SerialOpen()
-	if err != nil {
-		log.Fatalf("Cannot Open %s", Config.SerialPort)
+	for{
+		err = SerialOpen()
+		if err == nil {
+			break
+		}
+		log.Printf("Cannot Open %s\n", Config.SerialPort)
+		time.Sleep(time.Second*2)
 	}
+
 	go SerialReadThread()
 	go delayStartBrowser(time.Second)
 	log.Println("Serving at " + Config.HTTPAddr)
