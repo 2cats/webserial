@@ -39,8 +39,13 @@ func delayStartBrowser(t time.Duration) {
 	}
 
 }
-
+func emit2All(topic string ,value string)  {
+	for _, so := range solist {
+		so.Emit(topic, value)
+	}
+}
 func main() {
+
 	ReadConfiguration()
 	FlogInit()
 	solist = make(map[string]socketio.Socket)
@@ -50,7 +55,8 @@ func main() {
 	}
 	server.On("connection", func(so socketio.Socket) {
 		solist[so.Id()] = so
-		log.Println("on connection")
+		//log.Println("on connection")
+		so.Emit(SERIAL_CONNECTED_TOPIC,serial_connected)
 		files, err := ListDir(".", ".log")
 		if err == nil && files != nil && len(files) > 0 {
 			histjson, err := json.Marshal(files)
@@ -75,14 +81,18 @@ func main() {
 		})
 		so.On("tx", func(msg string) {
 			bs, _ := String2Bytes(msg)
-			_, err := Serial.Write(bs)
-			checkReportError(err)
+			if Serial!=nil{
+				_, err := Serial.Write(bs)
+				checkReportError(err)
+			}else{
+				so.Emit("err","Serial Port Not Opened")
+			}
 		})
 		so.On("err", func(msg string) {
 			log.Printf("!ERR: " + msg)
 		})
 		so.On("disconnection", func() {
-			log.Println("on disconnect")
+			//log.Println("on disconnect")
 			for k, _ := range solist {
 				if k == so.Id() {
 					delete(solist, k)
@@ -96,14 +106,6 @@ func main() {
 	})
 	http.Handle("/socket.io/", server)
 	http.Handle("/", http.FileServer(http.Dir("./public")))
-	for{
-		err = SerialOpen()
-		if err == nil {
-			break
-		}
-		log.Printf("Cannot Open %s\n", Config.SerialPort)
-		time.Sleep(time.Second*2)
-	}
 
 	go SerialReadThread()
 	go delayStartBrowser(time.Second)

@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"gopkg.in/gcfg.v1"
 )
 
-const (
+var (
 	ConfigFileName = "config.txt"
 )
 
@@ -34,6 +35,9 @@ var _Config struct {
 var Config = &_Config.Common
 
 func ReadConfiguration() {
+	if len(os.Args)>1{
+		ConfigFileName=os.Args[1]
+	}
 	err := gcfg.ReadFileInto(&_Config, ConfigFileName)
 	panicWhenError(err)
 	if Config.SendInterval<0{

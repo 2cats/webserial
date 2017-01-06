@@ -37,8 +37,7 @@ export default class Sender extends Component {
 		})
 	}
 }
-//action={{ color: 'teal', labelPosition: 'left',disabled:this.state.sendDisabled, icon: 'terminal', content: 'Send' ,onClick:this.handleSendInput.bind(this) }}
-//					    actionPosition='left'
+
 	handleSendInput(){
 		let str =this.state.input;
 		let sd=Socket.rawString2HexString(str);

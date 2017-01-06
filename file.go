@@ -7,7 +7,7 @@ import (
 )
 
 func TruncateLog() {
-	logfile, err := os.OpenFile(logfilename, os.O_TRUNC, 0666)
+	logfile, err := os.OpenFile(logfilename, os.O_RDWR|os.O_TRUNC, 0666)
 	defer logfile.Close()
 	checkReportError(err)
 

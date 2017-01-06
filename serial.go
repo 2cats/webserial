@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -10,7 +9,12 @@ import (
 )
 
 var Serial *serial.Port
-
+const (
+	SERIAL_CONNECTED_TOPIC = "serial_connected"
+)
+var (
+	serial_connected="n"
+)
 func RawBytes2StrBytes(data []byte) string {
 	length := len(data)
 	if length < 1 {
@@ -33,13 +37,24 @@ func SerialReadThread() {
 	buf := make([]byte, 10240)
 	var n int
 	var err error
+	for{
+		err = SerialOpen()
+		if err == nil {
+			break
+		}
+		log.Printf("Cannot Open %s\n", Config.SerialPort)
+		time.Sleep(time.Second*2)
+	}
+	serial_connected="y"
+	emit2All(SERIAL_CONNECTED_TOPIC,serial_connected)
 	for {
 		if Config.SendInterval > 0 {
 			time.Sleep(time.Duration(Config.SendInterval) * time.Millisecond)
 		}
 		n, err = Serial.Read(buf)
 		if err != nil {
-			checkReportError(errors.New("Serial Port Unexpectedly Closed"))
+			serial_connected="n"
+			emit2All(SERIAL_CONNECTED_TOPIC,serial_connected)
 			for {
 				log.Printf("[Retry] Opening SerialPort")
 				if Serial != nil {
@@ -47,7 +62,8 @@ func SerialReadThread() {
 				}
 				err = SerialOpen()
 				if err == nil {
-					log.Printf("SerialPort Opened")
+					serial_connected="y"
+					emit2All(SERIAL_CONNECTED_TOPIC,serial_connected)
 					break
 				}
 				time.Sleep(time.Second * 2)
@@ -58,9 +74,7 @@ func SerialReadThread() {
 			log.Printf("Serial Recv: %d", n)
 			str:=RawBytes2StrBytes(buf[:n])
 			Flogger.Printf(str)
-			for _, so := range solist {
-				so.Emit("rx", str)
-			}
+			emit2All("rx",str)
 		}
 
 	}

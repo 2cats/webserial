@@ -5,7 +5,8 @@ class Notification{
   	notify(msg,level) {
 		this._system.addNotification({
 	      message: msg,
-	      level: level
+	      level: level,
+				position:'br'
 	    });
   	}
   	 success(msg) {
